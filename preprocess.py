@@ -12,7 +12,7 @@ def mkhash(dat):
     h="00"
     for i in dat:
         s = re.sub('\s', '', i)
-        nh = hashlib.md5(s.decode('utf8')).hexdigest()[0:2]
+        nh = hashlib.md5(s.encode('utf-8')).hexdigest()[0:2]
         result = int(h, base=16) ^ int(nh, base=16)
         if (not s.startswith('//') or len(s)<=5):
             h= "{0:02x}".format(result)
@@ -40,7 +40,7 @@ for path, dirs, files in os.walk('./code'):
                 dat = dat.replace('\t','  ')
                 s = dat.lstrip(' ')
                 if (s.startswith('//') and len(s) > 5):
-                    print>>out, "/"+s
+                    print("/"+s, file=out)
                     continue
                 elif (s.startswith('//') and len(s) <= 5 and hash != '00'):
                     print('WARNING: Incorrect hash in %s: %s %s'%(p,hash,s))
@@ -51,7 +51,8 @@ for path, dirs, files in os.walk('./code'):
                 s = '-'*add + s
                 if(len(s) > MARGIN):
                     lenthWarning = True
-                print>>out, "@"+hash + "|@" + s.ljust(MARGIN, ' ')
+                print("@"+hash + "|@" + s.ljust(MARGIN, ' '), file=out)
             if lenthWarning:
                 print('WARNING: Code too wide: %s' % p)
+            print('finished processing file %s' % f)
 

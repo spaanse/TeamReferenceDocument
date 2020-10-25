@@ -6,13 +6,23 @@ jobs:
     name: Compile reference.tex
     steps:
       - name: Set up git repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+      - name: Set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Prepare code segments
+        run: |
+          python preprocess.py
+          ls -R _code
       - name: Compile LaTeX document
-        uses: dante-ev/latex-action@master
+        uses: xu-cheng/latex-action@v2
         with:
           root_file: 'reference.tex'
-          args: 
-            -pdf
-            -latexoption=-file-line-error
-            -latexoption=-interaction=nonstopmode
-            -latexoption=-shell-escape
+          extra_system_packages: "py-pygments"
+          latexmk_shell_escape: true
+      - name: Upload pdf file
+        uses: actions/upload-artifact@v2
+        with:
+          name: reference.pdf
+          path: reference.pdf
