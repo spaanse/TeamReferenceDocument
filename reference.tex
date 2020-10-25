@@ -1,0 +1,44 @@
+\documentclass[8pt,a4paper,landscape,oneside]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[scaled]{beramono}
+\usepackage{fullpage}
+\usepackage[top=3pt, bottom=1cm, left=0.3cm, right=0.3cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{titling}
+\usepackage{multicol}
+\usepackage{minted}
+\usepackage{lipsum}
+
+\title{Team Reference Document}
+\author{Jelmer Firet}
+
+\setminted{autogobble,tabsize=2,fontsize=\normalsize,escapeinside=@@}
+
+\fancyhf{}
+\pagestyle{fancy}
+\lhead{Team Reference Document}
+\rhead{\thepage}
+\cfoot{\;}
+\setlength{\headheight}{15.2pt}
+\setlength{\droptitle}{-30pt}
+% \setlength{\columnseprule}{0.4pt}
+\setlength{\columnsep}{3pt}
+\posttitle{\par\end{center}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\begin{document}
+	\begin{multicols*}{2}
+		\maketitle
+		\vspace*{-45pt}
+		\thispagestyle{fancy}
+		\begin{multicols}{2}
+			\tableofcontents
+			\columnbreak
+			\vfill\null
+		\end{multicols}
+		\vfill\null
+		\columnbreak
+	\end{multicols*}
+\end{document}
