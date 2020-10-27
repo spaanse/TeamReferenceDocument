@@ -9,6 +9,7 @@
 \usepackage{multicol}
 \usepackage{minted}
 \usepackage{lipsum}
+\usepackage{enumitem}
 
 \title{Team Reference Document}
 \author{Jelmer Firet}
@@ -27,6 +28,13 @@
 \posttitle{\par\end{center}}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
+
+\newenvironment{itemize_compact}
+{ \begin{itemize}[leftmargin=.5cm]
+    \setlength{\itemsep}{0pt}
+    \setlength{\parskip}{0pt}
+    \setlength{\parsep}{0pt}     }
+{ \end{itemize}                  }
 
 \begin{document}
 	\begin{multicols*}{2}
@@ -84,29 +92,32 @@
 			}
 		\end{center}
 		\vfill\null
+	\end{multicols*}
+	\newpage
+	\begin{multicols*}{4}		
+		\section{Datastructures}
+		\subsection{Union-Find}
+		\inputminted[firstline=9,lastline=19]{c++}{_code/datastructures/union_find.cpp}
+		\subsection{Segment Tree}
+		\inputminted[firstline=14,lastline=52]{c++}{_code/datastructures/segment_tree.cpp}
+		\vfill\null
 		\columnbreak
-		\newpage
-		\begin{multicols}{2}
-			\section{Datastructures}
-			\subsection{Union-Find}
-			\inputminted[firstline=9,lastline=19]{c++}{_code/datastructures/union_find.cpp}
-			\subsection{Segment Tree}
-			\inputminted[firstline=14,lastline=52]{c++}{_code/datastructures/segment_tree.cpp}
-			\columnbreak
-			\vfill\null
-		\end{multicols}
+		\subsection{Treap}
+		\inputminted[firstline=16,lastline=67]{c++}{_code/datastructures/treap.cpp}
+		\vfill\null
 		\columnbreak
-		\begin{multicols}{2}
-			\subsection{Treap}
-			\inputminted[firstline=16,lastline=69]{c++}{_code/datastructures/treap.cpp}
-			\columnbreak
-			\inputminted[firstline=70,lastline=109]{c++}{_code/datastructures/treap.cpp}
-			% \subsection{AVL Tree}
-			% \inputminted[firstline=7,lastline=59]{c++}{_code/datastructures/avl_tree.cpp}
-			% \columnbreak
-			% \inputminted[firstline=60,lastline=113]{c++}{_code/datastructures/avl_tree.cpp}
-			\vfill\null
-		\end{multicols}
-		\newpage
+		\inputminted[firstline=68,lastline=115]{c++}{_code/datastructures/treap.cpp}
+		\noindent
+		Variations of the treap code can result in
+		\begin{itemize_compact}
+			\item max heap: \mintinline{c++}{h(n)= n->v}, remove h from node.
+			\item min heap: \mintinline{c++}{h(n)=-n->v}, remove h from node.
+			\item cartesian tree: let \mintinline{c++}{n->v=idx} and \mintinline{c++}{n->h=val}.
+		\end{itemize_compact}
+		\vfill\null
+		\columnbreak
+		\subsection{Implicit Treap}
+		\inputminted[firstline=16,lastline=69]{c++}{_code/datastructures/implicit_treap.cpp}
+		\vfill\null
 	\end{multicols*}
 \end{document}
