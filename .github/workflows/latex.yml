@@ -1,5 +1,7 @@
 name: Build LaTeX
-on: [push]
+on: 
+  push:
+    paths: 'reference.tex'
 jobs:
   compile-latex:
     runs-on: ubuntu-latest
