@@ -35,24 +35,23 @@ for path, dirs, files in os.walk('./code'):
             dat = [ line for line in open(p).read().splitlines() if not line.startswith('// vim: ') and not line.startswith('# vim: ') ]
             out = open(q, 'w')
 
-            lenthWarning = False
-            for dat, hash in zip(dat, mkhash(dat)):
+            for line, (dat, hash) in enumerate(zip(dat, mkhash(dat))):
                 dat = dat.replace('\t','  ')
                 s = dat.lstrip(' ')
                 if (s.startswith('//') and len(s) > 5):
                     print("/"+s, file=out)
                     continue
                 elif (s.startswith('//') and len(s) <= 5 and hash != '00'):
-                    print('WARNING: Incorrect hash in %s: %s %s'%(p,hash,s))
+                    print('Incorrect hash in %s on line %d: %s %s'%(p,line+1,hash,s))
+                    exit(1)
                 add = len(dat) - len(s)
                 if add > 0:
                     s = ' ' + s
                     add -= 1
                 s = '-'*add + s
                 if(len(s) > MARGIN):
-                    lenthWarning = True
+                    print('WARNING: Code too wide in %s on line %d: %s' % (p,line+1,s))
+                    exit(1)
                 print("@"+hash + "|@" + s.ljust(MARGIN, ' '), file=out)
-            if lenthWarning:
-                print('WARNING: Code too wide: %s' % p)
             print('finished processing file %s' % f)
 
