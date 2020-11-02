@@ -21,6 +21,22 @@ def mkhash(dat):
         else:
             yield h
 
+alphabet = list('0123456789aAbcdDeEfFGhHiIjJkLmMnNpqrRstTuvwxyYz')
+def revhash(goal, prefix=None):
+    if prefix == None:
+        first = int(goal[0:1], base=16) ^ int(goal[1:2], base=16)
+        prefix = "//{0:01x}".format(first)
+    if len(prefix)==5:
+        hash = hashlib.md5(prefix.encode('utf-8')).hexdigest()[0:2]
+        if hash == goal:
+            return prefix
+    else:
+        for letter in alphabet:
+            res = revhash(goal,prefix+letter)
+            if res != None:
+                return res
+    return None
+
 for path, dirs, files in os.walk('./code'):
     for f in files:
         if (f.endswith(".cpp") or f.endswith('.java') or f.endswith('.sh')) and not f.endswith(".test.cpp"):
@@ -34,6 +50,7 @@ for path, dirs, files in os.walk('./code'):
 
             dat = [ line for line in open(p).read().splitlines() if not line.startswith('// vim: ') and not line.startswith('# vim: ') ]
             out = open(q, 'w')
+            prevhash = "00"
 
             for line, (dat, hash) in enumerate(zip(dat, mkhash(dat))):
                 dat = dat.replace('\t','  ')
@@ -43,6 +60,7 @@ for path, dirs, files in os.walk('./code'):
                     continue
                 elif (s.startswith('//') and len(s) <= 5 and hash != '00'):
                     print('Incorrect hash in %s on line %d: %s %s'%(p,line+1,hash,s))
+                    print('Line should be %s'%(revhash(prevhash)))
                     exit(1)
                 add = len(dat) - len(s)
                 if add > 0:
@@ -53,5 +71,6 @@ for path, dirs, files in os.walk('./code'):
                     print('WARNING: Code too wide in %s on line %d: %s' % (p,line+1,s))
                     exit(1)
                 print("@"+hash + "|@" + s.ljust(MARGIN, ' '), file=out)
+                prevhash = hash
             print('finished processing file %s' % f)
 
