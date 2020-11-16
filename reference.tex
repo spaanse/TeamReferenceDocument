@@ -10,6 +10,7 @@
 \usepackage{minted}
 \usepackage{lipsum}
 \usepackage{enumitem}
+\usepackage{graphicx}
 
 \title{Team Reference Document}
 \author{Jelmer Firet}
@@ -18,7 +19,7 @@
 
 \fancyhf{}
 \pagestyle{fancy}
-\lhead{Team Reference Document}
+\lhead{TRD The Algoteers, Radboud University Nijmegen}
 \rhead{\thepage}
 \cfoot{\;}
 \setlength{\headheight}{15.2pt}
@@ -37,10 +38,17 @@
 { \end{itemize}                  }
 
 \begin{document}
+	\pagenumbering{gobble}
 	\begin{multicols*}{2}
-		\maketitle
-		\vspace*{-45pt}
-		\thispagestyle{fancy}
+		\begin{center}			
+		\begin{minipage}[c]{0.20\textwidth}
+			\includegraphics[width=\textwidth]{resouce/radboud_logo_full.jpg}
+		\end{minipage}\;
+		\begin{minipage}[c]{0.16\textwidth}
+			\LARGE Team Reference Document\\
+			\Large The Algoteers
+		\end{minipage}
+		\end{center}
 		\begin{multicols}{2}
 			\tableofcontents
 			\columnbreak
@@ -94,6 +102,8 @@
 		\vfill\null
 	\end{multicols*}
 	\newpage
+	\pagenumbering{arabic}
+	\setcounter{page}{2}
 	\begin{multicols*}{4}		
 		\section{Datastructures}
 		\subsection{Union-Find}
