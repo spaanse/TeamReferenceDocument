@@ -7,6 +7,7 @@ typedef vector<vi> vvi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 typedef int64_t ll;
+typedef double db;
 bool ckmax(int&a,int b){return b>a?a=b,1:0;}
 bool ckmin(int&a,int b){return b<a?a=b,1:0;}
 int main() {
