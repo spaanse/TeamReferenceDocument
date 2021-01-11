@@ -41,7 +41,7 @@ mat ldu(vi&p,int&d) {mat a=*this; int k,i,j;
 	for(k=0;k<min(R,C);k++){ d*=a(k,k);i=k;
 		while(i<R && fabs(a(i,k))<1e-9) i++;
 		assert(i!=R); if(i!=k){ d*=-1;
-			swap(a.m[i],a.m[j]);swap(p[i],p[j]);}
+			swap(a.m[i],a.m[k]);swap(p[i],p[k]);}
 		for(i=k+1;i<R;i++) a(i,k)/=a(k,k);
 		for(j=k+1;j<C;j++) a(k,j)/=a(k,k);
 		for(i=k+1;i<R;i++) for(j=k+1;j<C;j++)
@@ -79,6 +79,7 @@ int main() {
 	A(0,0) =  4; A(0,1) = -3; A(0,2) =  5;
 	A(1,0) =  1; A(1,1) =  0; A(1,2) =  3;
 	A(2,0) = -1; A(2,1) =  5; A(2,2) =  2;
+	cout << A.det() << endl;
 	print(A.inv());
 	mat B(3,1);
 	B(0,0) =  3;// B(0,1) =  7; B(0,2) = -1;
