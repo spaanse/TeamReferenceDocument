@@ -18,18 +18,14 @@ typedef vector<ii> vii;
 typedef vector<vii> vvii;
 typedef int64_t ll;
 //eJa
-//bool ckmin(int&a,int b){return b<a?a=b,1:0;}
-vi dijkstra(vvii adj, int s){
+vi dijkstra(vvii adj, int s){int v,dv,w,dw;
 	priority_queue<ii,vii,greater<ii>> t;
-	vi p(adj.size(),-1), d(adj.size(),INF);
-	d[s]=0;t.push({0,s});
-	while (!t.empty()) {
-		int v,dv; tie(dv,v) = t.top(); t.pop();
-		if (d[v]==dv) for (ii e:adj[v]) {
-			int w,dw; tie(w,dw) = e; dw+=dv;
-			if(ckmin(d[w],dw)) {
-				p[w]=v;t.push({dw,w}); }}}
-	return d;}
+	vi p(adj.size(),-1),d(adj.size(),INF);
+	for(t.push({0,s});t.size();t.pop()){
+		tie(dv,v)=t.top();if(dv<d[v]){ d[v]=dv;
+			for(ii e:adj[v]){ tie(w,dw)=e; dw+=dv;
+				if(dw<d[w]){p[w]=v;t.push({dw,w});}
+	}}} return d;}
 
 int main() {
 	vvii adjList(6);
