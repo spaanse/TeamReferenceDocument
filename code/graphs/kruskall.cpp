@@ -31,8 +31,7 @@ typedef vector<edge> ve;
 ve kruskall(int n, ve edges){
 	sort(edges.begin(),edges.end());
 	uf ts(n); ve mst; mst.reserve(n);
-	for (edge e : edges) {
-		if (ts.same(e.f,e.t)) continue;
+	for(edge e:edges)if(!ts.same(e.f,e.t)){
 		mst.push_back(e); ts.join(e.f,e.t);}
 	return mst;}
 
