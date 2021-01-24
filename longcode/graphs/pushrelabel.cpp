@@ -7,6 +7,8 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 typedef int64_t ll;
 
+ll numPush, maxPush=0;
+
 //10N
 struct fgraph{
 	int numNode,source,sink;
@@ -18,7 +20,7 @@ struct fgraph{
 		source = _source;
 		sink = _sink;
 		label.assign(numNode,0);
-		label[source] = numNode;
+		label[source] = 2*numNode;
 		excess.assign(numNode,0);
 		excess[source] = 2e9;
 		index.assign(numNode,0);
@@ -32,11 +34,14 @@ struct fgraph{
 		adjList[v].push_back({u});
 	}
 	void push(int u,int v){
-		if(label[v]>=label[u]) return;
-		int newflow=min(excess[u],
-		                capacity[u][v]-flow[u][v]);
-		if(!excess[v] and v!=source and v!=sink and newflow>0) {
+		if (label[u] < (label[v]|1)) return;
+		int maxflow = -flow[u][v];
+		if (!(label[u]&1)) maxflow += capacity[u][v];
+		int newflow = min(excess[u], maxflow);
+		if (newflow <= 0) return;
+		if(!excess[v] and v!=source and v!=sink) {
 			q.push(v);
+			numPush++;
 		}
 		flow[u][v]+=newflow;
 		flow[v][u]-=newflow;
@@ -69,11 +74,11 @@ struct fgraph{
 
 int main(){
 	int seed = 0;
-	int numNode = 1000;
-	int numEdge = 2000;
+	int numNode = 10;
+	int numEdge = 30;
 	while (true) {
-		cout << seed << " ";
 		srand(seed);
+		numPush = 0;
 		vii edges;
 		for (int i = 0; i < numNode-1; i++) {
 			for (int j = 1; j < numNode; j++) if (i!=j){
@@ -86,7 +91,10 @@ int main(){
 			fg.addedge(edges[i].first,edges[i].second,rand()%100);
 		}
 		int flow = fg.calc();
-		cout << flow << endl;
+		maxPush = max(maxPush,numPush);
+		if (numPush >= maxPush-numNode) {
+			cout << seed << " " << numPush << endl;
+		}
 		
 		for(int from=0;from<numNode;from++) {
 			for (int v : fg.adjList[from]) {
@@ -95,7 +103,7 @@ int main(){
 			if (from != 0 && from != numNode-1) {
 				assert(fg.excess[from] == 0);
 			}
-			assert(fg.label[from] < 2*numNode);
+			assert(fg.label[from] < 4*numNode);
 		}
 
 		queue<int> q;

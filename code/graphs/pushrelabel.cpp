@@ -10,12 +10,13 @@ typedef int64_t ll;
 //10N
 struct fgraph{int n;vi l,x,i;vvi A,C,F;
 queue<int>q; fgraph(int _n):l(_n),x(l),i(l),
-A(_n),C(_n,l),F(C){	n=_n;l[0]=n;x[0]=2e9;}
+A(_n),C(_n,l),F(C){	n=_n;l[0]=2*n;x[0]=2e9;}
 void addedge(int u,int v,int c){C[u][v]+=c;
 	A[u].push_back({v});A[v].push_back({u});}
-void ps(int u,int v){if(l[v]>=l[u]) return;
-	int f=min(x[u],C[u][v]-F[u][v]);
-	if(!x[v]&&v!=0&&v!=n-1&&f>0)q.push(v);
+void ps(int u,int v){int f=x[u];
+	f=min(f,(l[u]&1?0:C[u][v])-F[u][v]);
+	if(l[u]<(l[v]|1)||f<=0)return;
+	if(!x[v]&&v!=0&&v!=n-1)q.push(v);
 	F[u][v]+=f;F[v][u]-=f;x[v]+=f;x[u]-=f;}
 void fix(int u){while(x[u]){
 	if(i[u]==(int)A[u].size()){l[u]++;i[u]=0;}
