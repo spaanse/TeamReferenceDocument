@@ -68,17 +68,12 @@ struct fgraph{
 };
 
 int main(){
-	srand(0);
-	// int numNode, numEdge;
-	// cin >> numNode >> numEdge;
-	// fgraph fg(numNode,0,numNode-1);
-	// for (int index = 0; index < numEdge; index++) {
-	// 	int from,v,cap;
-	// 	cin >> from >> v >> cap;
-	// 	fg.addedge(from,v,cap);
-	// }
+	int seed = 0;
+	int numNode = 1000;
+	int numEdge = 2000;
 	while (true) {
-		int numNode = 1000;
+		cout << seed << " ";
+		srand(seed);
 		vii edges;
 		for (int i = 0; i < numNode-1; i++) {
 			for (int j = 1; j < numNode; j++) if (i!=j){
@@ -86,22 +81,12 @@ int main(){
 			}
 		}
 		random_shuffle(edges.begin(), edges.end());
-		int numEdge = 2000;
 		fgraph fg(numNode,0,numNode-1);
 		for (int i = 0; i < numEdge; i++) {
 			fg.addedge(edges[i].first,edges[i].second,rand()%100);
 		}
-		// fg.addedge(0,1,numNode);
-		// for (int i = 2; i < numNode-1; i++) {
-		// 	fg.addedge(1,i,1);
-		// }
-		// for (int i = 2; i < numNode-2; i++) {
-		// 	fg.addedge(i,i+1,numNode);
-		// }
-		// fg.addedge(numNode-2,numNode-1,numNode);
 		int flow = fg.calc();
-		if (flow == 0) continue;
-		cout << fg.calc() << endl;
+		cout << flow << endl;
 		
 		for(int from=0;from<numNode;from++) {
 			for (int v : fg.adjList[from]) {
@@ -127,6 +112,7 @@ int main(){
 				}
 			}
 		}
+		seed++;
 	}
 	return 0;
 }
