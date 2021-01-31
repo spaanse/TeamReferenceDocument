@@ -120,6 +120,27 @@ int main(){
 				}
 			}
 		}
+		vi topOrder;
+		vi degree(numNode,0);
+		for (int from = 0; from < numNode; from++) {
+			for (int to : fg.adjList[from]) 
+			if (fg.flow[from][to] > 0) {
+				degree[to]++;
+			}
+		}
+		assert(degree[fg.source] == 0);
+		for (int cur = 0; cur < numNode; cur++) {
+			if (degree[cur] == 0) topOrder.push_back(cur);
+		}
+		for (int idx=0;idx < (int)topOrder.size();idx++) {
+			int cur = topOrder[idx];
+			for (int to : fg.adjList[cur]) 
+			if (fg.flow[cur][to] > 0){
+				degree[to]--;
+				if (degree[to] == 0) topOrder.push_back(to);
+			}
+		}
+		assert((int)topOrder.size() == numNode);
 		seed++;
 	}
 	return 0;
