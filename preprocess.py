@@ -61,7 +61,7 @@ for path, dirs, files in os.walk('./code'):
                 elif (s.startswith('//') and len(s) <= 5 and hash != '00'):
                     print('Incorrect hash in %s on line %d: %s %s'%(p,line+1,hash,s))
                     print('Line should be %s'%(revhash(prevhash)))
-                    exit(1)
+                    # exit(1)
                 add = len(dat) - len(s)
                 if add > 0:
                     s = ' ' + s
@@ -69,7 +69,7 @@ for path, dirs, files in os.walk('./code'):
                 s = '-'*add + s
                 if(len(s) > MARGIN):
                     print('WARNING: Code too wide in %s on line %d: %s' % (p,line+1,s))
-                    exit(1)
+                    # exit(1)
                 print("@"+hash + "|@" + s.ljust(MARGIN, ' '), file=out)
                 prevhash = hash
             print('finished processing file %s' % f)
