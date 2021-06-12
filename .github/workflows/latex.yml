@@ -16,7 +16,6 @@ jobs:
       - name: Prepare code segments
         run: |
           python preprocess.py
-          ls -R _code
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
