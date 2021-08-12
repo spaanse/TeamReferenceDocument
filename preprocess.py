@@ -56,7 +56,7 @@ for path, dirs, files in os.walk('./code'):
                 dat = dat.replace('\t','  ')
                 s = dat.lstrip(' ')
                 if (s.startswith('//') and len(s) > 5):
-                    print("/"+s, file=out)
+                    print("//|"+s[2:], file=out)
                     continue
                 elif (s.startswith('//') and len(s) <= 5 and hash != '00'):
                     print('Incorrect hash in %s on line %d: %s %s'%(p,line+1,hash,s))
