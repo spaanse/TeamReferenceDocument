@@ -6,32 +6,33 @@ typedef vector<vi> vvi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 typedef int64_t ll;
+typedef queue<int> qi;
 
-//10N
-struct fgraph{int n;vi l,x,i;vvi A,C,F;
-queue<int>q; fgraph(int _n):l(_n),x(l),i(l),
-A(_n),C(_n,l),F(C){	n=_n;l[0]=n;x[0]=2e9;}
-void addedge(int u,int v,int c){C[u][v]+=c;
-	A[u].push_back({v});A[v].push_back({u});}
+//faL
+struct flow{int s,t;vi l,x,i;vvi A,C,F;qi q;
+flow(int n):l(n),x(n),i(n),A(n),C(n,l),F(C){
+	s=0;t=n-1;l[s]=n;x[s]=2e9;}
+void add(int u,int v,int c){C[u][v]+=c;
+	A[u].push_back(v);A[v].push_back(u);}
 void ps(int u,int v){if(l[v]>=l[u]) return;
 	int f=min(x[u],C[u][v]-F[u][v]);
-	if(!x[v]&&v!=0&&v!=n-1&&f>0)q.push(v);
+	if(!x[v]&&v!=s&&v!=t&&f>0)q.push(v);
 	F[u][v]+=f;F[v][u]-=f;x[v]+=f;x[u]-=f;}
 void fix(int u){while(x[u]){
 	if(i[u]==(int)A[u].size()){l[u]++;i[u]=0;}
 	else ps(u,A[u][i[u]++]);} i[u]--;}
-int calc(){for(int v:A[0]) ps(0,v);
+int calc(){for(int v:A[s]) ps(s,v);
 	for(;q.size();q.pop())fix(q.front());
-	return x[n-1];}};
+	return x[t];}};
 
 int main(){
 	int numNode, numEdge;
 	cin >> numNode >> numEdge;
-	fgraph fg(numNode);
+	flow fg(numNode);
 	for (int i = 0; i < numEdge; i++) {
 		int fr,to,cap;
 		cin >> fr >> to >> cap;
-		fg.addedge(fr,to,cap);
+		fg.add(fr,to,cap);
 	}
 	cout << fg.calc() << endl;
 
