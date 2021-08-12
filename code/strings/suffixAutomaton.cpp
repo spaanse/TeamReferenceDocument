@@ -16,9 +16,9 @@ typedef string st;
 struct sufAut{
 struct nd{nd*p=0;int ln=0,oc=0,ps=1;
 	map<char,nd*>t={};}*l,*r=l=new nd;
-nd* find(st s){nd*c=r;for(char x:s)if(c){
+nd* fd(st s){nd*c=r;for(char x:s)if(c){
 		c=c->t[x];}return c;}
-bool has(st s){return find(s);}
+bool has(st s){return fd(s);}
 void add(char x){nd*c=new nd{r,l->ln+1,1};
 	for(;l&&!l->t[x];l=l->p){l->t[x]=c;}if(l){
 		nd*n=l->t[x];if(l->ln+1!=n->ln){
@@ -26,21 +26,21 @@ void add(char x){nd*c=new nd{r,l->ln+1,1};
 		for(;l&&l->t[x]==n;l=l->p)l->t[x]=d;
 	}else c->p=n;}l=c;}
 void add(st s){for(int x:s)add(x);}
-vector<nd*>rto(){vector<nd*>a{r};
+vector<nd*> revTopo(){vector<nd*>a{r};
 	for(nd*c:a)for(auto e:c->t){nd*n=e.second;
 		if(n&&n->ln==c->ln+1)a.push_back(n);}
 	reverse(a.begin(),a.end());return a;}
-int nsub(){int a=0;for(nd*c:rto()){
+int nSubStr(){int a=0;for(nd*c:revTopo()){
 	for(auto e:c->t){nd*n=e.second;if(n)
 		c->ps+=n->ps;}a+=c->ps;}return a;}
 st lexk(int k){st a;nd*c=r;int kp;while(k--)
 	for(auto e:c->t){nd*n=e.second;if(n){
 		kp=k;k-=n->ps;if(k<0){c=n;k=kp;
 		a.push_back(e.first);break;}}}return a;}
-void po(){for(nd*c:rto())
+void precomputeOcc(){for(nd*c:revTopo())
 	if(c->p)c->p->oc+=c->oc;}
-int fo(st s){return find(s)->ln-s.size();}
-int no(st s){return find(s)->oc;}};
+int fstOcc(st s){return fd(s)->ln-s.size();}
+int numOcc(st s){return fd(s)->oc;}};
 
 // #define pb push_back
 // vi fstr(st s){int n=s.size(),i=0;vi a(n);
@@ -49,9 +49,9 @@ int no(st s){return find(s)->oc;}};
 // 	for(;i<n;i++){a+=s[i]+'a';}return a;}
 // struct sufAut{int nv=26,l=0,n=1;vi ps,ln{0},
 // lk{-1},og{0},f{0},cnt;vvi t{vi(nv,-1)};
-// int find(vi s){int c=0,i=0;while(c!=-1){
+// int fd(vi s){int c=0,i=0;while(c!=-1){
 // 		c=t[c][s[i++]];}return(i==n?c:-1);}
-// bool has(vi s){return find(s)>=0;}
+// bool has(vi s){return fd(s)>=0;}
 // vi rtopo(){vi a;for(int i=0;i<n;i++)a[i]=i;
 // 	sort(a.begin(),a.end(),[&](int x,int y)
 // 		{return ln[x]>ln[y];});return a;}
@@ -72,12 +72,14 @@ int no(st s){return find(s)->oc;}};
 // 	while(k--)for(j=0;j<nv;j++)if(t[c][j]){
 // 		kp=k;k-=ps[t[c][j]];if(k<0){c=t[c][j];
 // 			a.push_back(j);k=kp;break;}}return a;}
-// void po(){cnt=og;for(int i:rtopo())
+// void precomputeOcc(){cnt=og;for(int i:rtopo())
 // 		if(lk[i]>=0)cnt[lk[i]]+=cnt[i];}
-// int no(vi s){return cnt[find(s)];}
-// int fo(vi s){return f[find(s)]-s.size();}};
+// int numOcc(vi s){return cnt[fd(s)];}
+// int fstOcc(vi s){return f[fd(s)]-s.size();}};
 
 int main(){
-	
+	sufAut s;
+	s.add("hello world!");
+	cout << (s.has("wor")?"true":"false") << endl;
 	return 0;
 }
