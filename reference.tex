@@ -1,9 +1,9 @@
-\documentclass[8pt,a4paper,landscape,oneside]{amsart}
+\documentclass[11pt, a4paper]{amsart}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[scaled]{beramono}
 \usepackage{fullpage}
-\usepackage[top=3pt, bottom=1cm, left=0.3cm, right=0.3cm]{geometry}
+\usepackage[top=3pt, bottom=1cm, left=0.2cm, right=0.2cm]{geometry}
 \usepackage{fancyhdr}
 \usepackage{titling}
 \usepackage{multicol}
@@ -11,6 +11,9 @@
 \usepackage{lipsum}
 \usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{pgfpages}
+% \pgfpagesuselayout{2 on 1}[a5paper, landscape]
+% \nofiles
 
 \title{Team Reference Document}
 \author{Jelmer Firet}
@@ -21,14 +24,10 @@
 \pagestyle{fancy}
 \lhead{TRD The Algoteers, Radboud University Nijmegen}
 \rhead{\thepage}
-\cfoot{\;}
-\setlength{\headheight}{15.2pt}
-\setlength{\droptitle}{-30pt}
-% \setlength{\columnseprule}{0.4pt}
+\setlength{\headheight}{21.5pt}
+\setlength{\droptitle}{-42.4pt}
 \setlength{\columnsep}{3pt}
 \posttitle{\par\end{center}}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0.4pt}
 
 \newenvironment{itemize_compact}
 { \begin{itemize}[leftmargin=.5cm]
@@ -39,72 +38,71 @@
 
 \begin{document}
 	\pagenumbering{gobble}
-	\begin{multicols*}{2}
-		\begin{center}			
-		\begin{minipage}[c]{0.20\textwidth}
+	\begin{center}
+		\begin{minipage}[c]{0.45\textwidth}
 			\includegraphics[width=\textwidth]{resouce/radboud_logo_full.jpg}
 		\end{minipage}\;
-		\begin{minipage}[c]{0.16\textwidth}
+		\begin{minipage}[c]{0.35\textwidth}
 			\LARGE Team Reference Document\\
 			\Large The Algoteers
 		\end{minipage}
-		\end{center}
-		\begin{multicols}{2}
-			\tableofcontents
-			\columnbreak
-			\vfill\null
-		\end{multicols}
-		\vfill\null
+	\end{center}
+	\begin{multicols}{2}
+		\tableofcontents
 		\columnbreak
-		\section{Setup} % (fold)
-		\begin{multicols*}{2}
-			\subsection{\texttt{\textasciitilde/check.sh}}
-			\inputminted[lastline=8]{sh}{.code/setup/check.sh}
-			\subsection{\texttt{\textasciitilde/.vimrc}}
-			\inputminted[lastline=9]{sh}{.code/setup/vimrc.sh}
-			\columnbreak
-			\subsection{\texttt{C++} header}
-			\inputminted[lastline=17]{cpp}{.code/setup/header.cpp}
-			\vfill\null
-		\end{multicols*}
-		\subsection{Checking copied TRD code} Most lines of code have hash codes. Use \texttt{\textasciitilde/check.sh} to calculate these.\\
-		The hash of a line is $h(\text{line})=h(\text{prev line})\oplus\text{md5}(\text{line without whitespace})$.
-		For the first line of TRD code $h(\text{prev line})$ is $00$, so you need to guarantee that in the copied code. Suppose the current hash of the previous line is \texttt{ac}. Then look in row \texttt{a} and column \texttt{c} to find \texttt{69H}. A new line with \texttt{//69H} will then have hash \texttt{00}. To skip over sections of TRD code: compute the xor of the actual and expected hash of the previous line and insert the corresponding comment. The first char in each cell is the xor of the row and column, so $a\oplus c=6$\\
-		\begin{center}		
-			\texttt{
-			\begin{tabular}{|p{0.1cm}|*{4}{*{4}{c}|}}
-			\hline
-			&0&1&2&3&4&5&6&7&8&9&a&b&c&d&e&f\\
-			\hline
-			0&008&11p&218&3E5&48Y&52N&62G&76r&84M&91G&a1m&b5A&c15&d2h&e2F&f17\\
-			1&12w&00Y&3A5&284&52J&426&79L&64x&93f&80e&b5Y&a4i&d18&c3e&fc5&e8s\\
-			2&28F&38I&05h&1ak&64d&74r&47r&52i&a26&b3p&81u&9ee&eAy&f2E&caH&d7L\\
-			3&31f&29A&11J&02k&72R&65w&5ih&413&bAH&a7L&9i3&85H&f8Y&e2M&dci&c3D\\
-			\hline
-			4&43c&546&62L&77d&03e&10N&287&32c&c0L&dej&e4c&fdp&82J&927&a1e&bd5\\
-			5&53R&401&72h&6E3&12r&0bb&36A&209&d2T&c8z&f52&e6c&95k&88G&bAv&a1E\\
-			6&63m&757&40c&50b&2aM&360&01v&1GF&ecx&f3q&cAL&d36&a09&b1d&824&91D\\
-			7&70b&6aa&537&402&32J&22c&146&0bL&f14&e3G&d0k&cbJ&b5a&ab9&94c&83H\\
-			\hline
-			8&80F&9ae&a06&b8G&c9n&d1i&e2a&faL&075&17z&20G&3D0&4aN&5At&62d&715\\
-			9&92b&8di&bb2&a2H&d4i&c32&fcL&eJa&13d&01D&34q&23a&54d&48p&7ce&60y\\
-			a&a7f&b7y&81R&93t&e8b&f0k&c5t&d6f&25J&355&047&14i&69H&7fL&486&57p\\
-			b&b2w&a0F&94b&810&f5e&e14&d75&c2j&33b&22D&11h&05d&72n&61d&58A&40z\\
-			\hline
-			c&cii&dMn&e1z&f2u&83f&94E&aFr&b1a&4a2&5s0&642&75v&08y&12E&2ai&3E8\\
-			d&d2N&c08&fE6&e1N&91L&885&b1i&a2A&538&434&79c&643&16a&02E&3Ae&25T\\
-			e&e0v&f0J&cct&d6z&a0N&b7r&817&953&6dD&727&43v&525&22e&31E&05c&12p\\
-			f&f5r&e4A&d6x&c9x&b1y&aek&90z&82s&70m&625&54t&444&34h&201&13T&031\\
-			\hline
-			\end{tabular}
-			}
-		\end{center}
 		\vfill\null
+	\end{multicols}
+	\vfill\null
 	\newpage
 	\pagenumbering{arabic}
 	\setcounter{page}{2}
-	\chead{2 Datastructures}
-		\section{Datastructures}
+	\section{Setup} % (fold)
+	\begin{multicols}{2}
+		\subsection{\texttt{\textasciitilde/check.sh}}
+		\inputminted[lastline=8]{sh}{.code/setup/check.sh}
+		\subsection{\texttt{\textasciitilde/.vimrc}}
+		\inputminted[lastline=9]{sh}{.code/setup/vimrc.sh}
+		\columnbreak
+		\subsection{\texttt{C++} header}
+		\inputminted[lastline=17]{cpp}{.code/setup/header.cpp}
+	\end{multicols}
+
+	\subsection{Checking copied TRD code}
+	Most lines of code have hash codes. Use \texttt{\textasciitilde/check.sh} to calculate these.\\
+	The hash of a line is $h(\text{line})=h(\text{prev line})\oplus\text{md5}(\text{line without whitespace})$.
+	For the first line of TRD code $h(\text{prev line})$ is $00$, so you need to guarantee that in the copied code. Suppose the current hash of the previous line is \texttt{ac}. Then look in row \texttt{a} and column \texttt{c} to find \texttt{69H}. A new line with \texttt{//69H} will then have hash \texttt{00}. To skip over sections of TRD code: compute the xor of the actual and expected hash of the previous line and insert the corresponding comment. The first char in each cell is the xor of the row and column, so $a\oplus c=6$\\
+	\begin{center}		
+		\texttt{
+		\begin{tabular}{|p{0.1cm}|*{4}{*{4}{c}|}}
+		\hline
+		&0&1&2&3&4&5&6&7&8&9&a&b&c&d&e&f\\
+		\hline
+		0&008&11p&218&3E5&48Y&52N&62G&76r&84M&91G&a1m&b5A&c15&d2h&e2F&f17\\
+		1&12w&00Y&3A5&284&52J&426&79L&64x&93f&80e&b5Y&a4i&d18&c3e&fc5&e8s\\
+		2&28F&38I&05h&1ak&64d&74r&47r&52i&a26&b3p&81u&9ee&eAy&f2E&caH&d7L\\
+		3&31f&29A&11J&02k&72R&65w&5ih&413&bAH&a7L&9i3&85H&f8Y&e2M&dci&c3D\\
+		\hline
+		4&43c&546&62L&77d&03e&10N&287&32c&c0L&dej&e4c&fdp&82J&927&a1e&bd5\\
+		5&53R&401&72h&6E3&12r&0bb&36A&209&d2T&c8z&f52&e6c&95k&88G&bAv&a1E\\
+		6&63m&757&40c&50b&2aM&360&01v&1GF&ecx&f3q&cAL&d36&a09&b1d&824&91D\\
+		7&70b&6aa&537&402&32J&22c&146&0bL&f14&e3G&d0k&cbJ&b5a&ab9&94c&83H\\
+		\hline
+		8&80F&9ae&a06&b8G&c9n&d1i&e2a&faL&075&17z&20G&3D0&4aN&5At&62d&715\\
+		9&92b&8di&bb2&a2H&d4i&c32&fcL&eJa&13d&01D&34q&23a&54d&48p&7ce&60y\\
+		a&a7f&b7y&81R&93t&e8b&f0k&c5t&d6f&25J&355&047&14i&69H&7fL&486&57p\\
+		b&b2w&a0F&94b&810&f5e&e14&d75&c2j&33b&22D&11h&05d&72n&61d&58A&40z\\
+		\hline
+		c&cii&dMn&e1z&f2u&83f&94E&aFr&b1a&4a2&5s0&642&75v&08y&12E&2ai&3E8\\
+		d&d2N&c08&fE6&e1N&91L&885&b1i&a2A&538&434&79c&643&16a&02E&3Ae&25T\\
+		e&e0v&f0J&cct&d6z&a0N&b7r&817&953&6dD&727&43v&525&22e&31E&05c&12p\\
+		f&f5r&e4A&d6x&c9x&b1y&aek&90z&82s&70m&625&54t&444&34h&201&13T&031\\
+		\hline
+		\end{tabular}
+		}
+	\end{center}
+
+	\newpage
+	\section{Datastructures}
 	\begin{multicols*}{2}		
 		\subsection{Union-Find}
 		\inputminted[firstline=9,lastline=19]{c++}{.code/datastructures/union_find.cpp}
@@ -116,8 +114,10 @@
 		\inputminted[firstline=14,lastline=32]{c++}{.code/datastructures/fenwick_tree.cpp}
 		\subsection{Sparse Table}
 		\inputminted[firstline=15,lastline=23]{c++}{.code/datastructures/sparse_table.cpp}
-		\subsection{Min Stack/Queue}
-		\inputminted[firstline=15,lastline=31]{c++}{.code/datastructures/min_queue.cpp}
+		\subsection{Min Stack}
+		\inputminted[firstline=15,lastline=22]{c++}{.code/datastructures/min_queue.cpp}
+		\subsection{Min Queue}
+		\inputminted[firstline=23,lastline=31]{c++}{.code/datastructures/min_queue.cpp}
 		\vfill\null
 	\end{multicols*}
 	\begin{multicols*}{2}
@@ -136,12 +136,13 @@
 		\vfill\null
 	\end{multicols*}
 	\newpage
-	\chead{2 Datastructures, 3 Graphs}
 	\begin{multicols*}{2}
 		\subsection{Implicit Treap}
 		\inputminted[firstline=16,lastline=57]{c++}{.code/datastructures/implicit_treap.cpp}
 		\vfill\null
 		\columnbreak
+		\subsection{Suffix Automaton}
+		\inputminted[firstline=16,lastline=43]{c++}{.code/strings/suffixAutomaton.cpp}
 		\vfill\null
 	\end{multicols*}
 	\section{Graphs}
@@ -152,28 +153,17 @@
 		\inputminted[firstline=17,lastline=21]{c++}{.code/graphs/floyd_warschall.cpp}
 		\subsection{Kruskall}
 		\inputminted[firstline=27,lastline=36]{c++}{.code/graphs/kruskall.cpp}
-		\vfill\null
-		\columnbreak
 		\subsection{Tarjan's SCC}
 		\inputminted[firstline=27,lastline=39]{c++}{.code/graphs/scc.cpp}
+		\vfill\null
+		\columnbreak
 		\subsection{Dinic's}
 		\inputminted[firstline=11,lastline=29]{c++}{.code/graphs/dinic.cpp}
 		\subsection{Push-Relabel}
 		\inputminted[firstline=11,lastline=25]{c++}{.code/graphs/pushrelabel.cpp}
 		\vfill\null
 	\end{multicols*}
-	\vfill\null
 	\newpage
-	\chead{4 Strings, 5 Mathematics}
-	\section{Strings}
-	\begin{multicols*}{2}
-		\subsection{Suffix Automaton}
-		\inputminted[firstline=16,lastline=43]{c++}{.code/strings/suffixAutomaton.cpp}
-		\vfill\null
-		\columnbreak
-		\vfill\null
-	\end{multicols*}
-	\vfill\null
 	\section{Mathematics}
 	\begin{multicols*}{2}
 		\subsection{Matrix}
@@ -186,16 +176,14 @@
 		\inputminted[firstline=20,lastline=29]{c++}{.code/maths/polynomial.cpp}
 		\vfill\null
 	\end{multicols*}
-	\vfill\null
 	\newpage
-	\chead{5 Mathematics, 6 Geometry}
 	\begin{multicols*}{2}
 		\subsection{Polynomial}
 		\inputminted[firstline=33,lastline=87]{c++}{.code/maths/polynomial.cpp}
 		\columnbreak
 		\vfill\null
 	\end{multicols*}
-	\columnbreak
+	\newpage
 	\section{Geometry}
 	\begin{multicols*}{2}
 		\subsection{Point}
@@ -207,6 +195,5 @@
 		\subsection{Circle}
 		\inputminted[firstline=25,lastline=69]{c++}{.code/geometry/circ.cpp}
 		\vfill\null
-	\end{multicols*}
 	\end{multicols*}
 \end{document}
