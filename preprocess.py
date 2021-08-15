@@ -37,6 +37,8 @@ def revhash(goal, prefix=None):
                 return res
     return None
 
+
+warnings = [];
 for path, dirs, files in os.walk('./code'):
     for f in files:
         if (f.endswith(".cpp") or f.endswith('.java') or f.endswith('.sh')) and not f.endswith(".test.cpp"):
@@ -59,18 +61,22 @@ for path, dirs, files in os.walk('./code'):
                     print("//|"+s[2:], file=out)
                     continue
                 elif (s.startswith('//') and len(s) <= 5 and hash != '00'):
-                    print('Incorrect hash in %s on line %d: %s %s'%(p,line+1,hash,s))
-                    print('Line should be %s'%(revhash(prevhash)))
-                    # exit(1)
+                    warnings.append(
+                        'Incorrect hash in %s on line %d: %s %s\nLine should be %s'%(p,line+1,hash,s,revhash(prevhash))
+                    )
                 add = len(dat) - len(s)
                 if add > 0:
                     s = ' ' + s
                     add -= 1
                 s = '-'*add + s
                 if(len(s) > MARGIN):
-                    print('WARNING: Code too wide in %s on line %d: %s' % (p,line+1,s))
-                    # exit(1)
+                    warnings.append(
+                        'WARNING: Code too wide in %s on line %d: %s' % (p,line+1,s)
+                    )
                 print("@"+hash + "|@" + s.ljust(MARGIN, ' '), file=out)
                 prevhash = hash
-            print('finished processing file %s' % f)
 
+for warning in warnings:
+    print(warning)
+
+exit(len(warnings))

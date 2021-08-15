@@ -16,7 +16,7 @@ typedef string st;
 struct sufAut{
 struct nd{nd*p=0;int ln=0,oc=0,ps=1;
 	map<char,nd*>t={};}*l,*r=l=new nd;
-nd* fd(st s){nd*c=r;for(char x:s)if(c){
+nd*fd(st s){nd*c=r;for(char x:s)if(c){
 		c=c->t[x];}return c;}
 bool has(st s){return fd(s);}
 void add(char x){nd*c=new nd{r,l->ln+1,1};
@@ -80,6 +80,6 @@ int numOcc(st s){return fd(s)->oc;}};
 int main(){
 	sufAut s;
 	s.add("hello world!");
-	cout << (s.has("wor")?"true":"false") << endl;
+	cout << (s.has("wor")?"T":"F") << endl;
 	return 0;
 }

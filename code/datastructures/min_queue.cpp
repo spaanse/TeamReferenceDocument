@@ -12,7 +12,6 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 typedef int64_t ll;
 //5ih
-// stack, but stores value of min element
 struct ms{stack<int> s,m;
 	int sz(){return s.sz();}
 	int top(){return s.sz()?s.top():2e9;}
@@ -20,7 +19,7 @@ struct ms{stack<int> s,m;
 	void push(int v){ s.push(v);
 		m.push(min(m.top(),v));}
 	void pop(){s.pop();m.pop();}};
-// queue, but stores value of min element
+//f14
 struct mq{ms i,o;
 	int sz(){return i.sz()+o.sz();}
 	void fix(){if(!o.sz())while(i.sz()){

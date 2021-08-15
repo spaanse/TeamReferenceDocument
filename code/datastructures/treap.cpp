@@ -13,117 +13,84 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 typedef int64_t ll;
 //727
-namespace treap { typedef int T;
-struct node{T v; int h, s=1;
-	node *p=NULL, *l=NULL, *r=NULL;
-	node(T _v){v=_v; h = rand();}};
-int h(node* n) {return n->h;}
-//a26
-// the size of any node pointer
-int size(node* n) {return n ? n->s : 0;}
-// update parent pointers and size
-void update(node*n) { if (!n) return;
-	n->p=NULL; n->s=1+size(n->l)+size(n->r);
-	if(n->l){n->l->p=n;} if(n->r){n->r->p=n;}}
-// deep copy of a tree
-node *copy(node*t) {
-	if(!t){return NULL;} node *c=new node{*t};
-	c->l = copy(t->l); c->r = copy(t->r);
-	update(c); return c;}
-// deep delete of a tree
-void delAll(node*&t) {
-	if(t) {delAll(t->l); delAll(t->r);
-		delete t; t = NULL;}}
-// split all nodes <v into l, all >v into r
-void split(node*t, T v, node*&l, node*&r){
-	if (!t) {l = r = NULL; return;}
-	if (v < t->v){split(t->l,v,l, t->l); r=t;}
-	if (v > t->v){split(t->r,v,t->r, r); l=t;}
-	if (v == t->v) {l=t->l; r=t->r; delete t;}
-	else update(t);}
-// given max l<min r combines l,r into t
-void concat(node*&t, node*l, node*r) {
-	if (!l || !r) {t=l?l:r;update(t); return;}
-	if (h(l)>h(r)){concat(l->r, l->r, r);t=l;}
-	else          {concat(r->l, l, r->l);t=r;}
-	update(t);}
-// inserts node n into tree t
-void insert(node*&t, node*n) {
-	if (!t) {t=n; update(t); return;}
-	if(h(n)>h(t)) split(t,n->v,n->l,n->r),t=n;
-	else insert(n->v < t->v ? t->l : t->r, n);
-	update(t);}
-// inserts value v into tree t
-void insert(node*&t, T v){
-	insert(t, new node{v});}
-// cuts value v from tree t, placed in d
-void remove(node*&t, T v, node*&d) {
-	if (!t) return;
-	if (t->v==v) {d=t; concat(t, t->l, t->r);}
-	else remove(v<t->v ? t->l : t->r, v, d);
-	update(t);}
-// removes value v from tree t
-void remove(node*&t, T v){
-	node*tmp=NULL;remove(t,v,tmp);delete tmp;}
-// finds value v in tree t, i becomes its idx
-node *find(node*t, T v, int&i) {
-	while(t && t->v != v)
-		if(v < t->v) t = t->l;
-		else {i += size(t->l) + 1; t = t->r;}
-	if (t) {i += size(t->l);} return t;}
-node *find(node*t, T v) {
-	int tmp=0; return find(t,v,tmp);}
-// finds the root of the tree containing n
-node *root(node*n) {
-	while (n->p) {n = n->p;} return n;}
-// finds the i-th node in the tree t
-node *nth(node*t, int i) {
-	while(t && i != size(t->l))
-		if(i < size(t->l)) t = t->l;
-		else {i -= size(t->l) + 1; t = t->r;}
-	return t;}
-// finds the smallest/largest node in tree t
-node *min(node*t){return nth(t, 0);}
-node *max(node*t){return nth(t, size(t)-1);}
-// finds the node with idx diff greater
-node *skip(node*n, int diff) {
-	find(root(n),n->v,diff);
-	return nth(root(n),diff);}
-// finds the next greater/smaller node
-node *succ(node*n) {return skip(n, 1);}
-node *pred(node*n) {return skip(n,-1);}
-// perform sym. set operation on l,r; res in l
-void setop(node*&l,node*&r,char b) {
-	if (!l || !r) {l=l?l:r; r=NULL;
-		if (!(b&1)){delAll(l);} return;}
-	if (h(l) < h(r)) swap(l,r);
-	node *lt, *rt = lt = NULL;
-	bool fnd=find(r,l->v);split(r,l->v,lt,rt);
-	setop(l->l, lt, b); setop(l->r, rt, b);
-	if (!(fnd?(b&2):(b&1))) remove(l, l->v);
-	r=NULL; update(l);}
-// compute sym. diff, isct, union
-void diff (node*&l, node*&r) {setop(l,r,1);}
-void isct (node*&l, node*&r) {setop(l,r,2);}
-void merge(node*&l, node*&r) {setop(l,r,3);}
-// compute set minus l\r, result in l
-void setmin (node*&l, node*r) {
-	if (!l || !r) return;
-	node *lt,*rt=lt=NULL; split(l,r->v,lt,rt);
-	setmin(lt,r->l); setmin(rt, r->r);
-	concat(l,lt,rt); update(l);}
-} using namespace treap;
+namespace treap{typedef int T;
+struct nd{T v;int h,s=1;nd*p=0,*l=0,*r=0;
+	nd(T _v){v=_v;h=rand();}};
+int h(nd*n){return n->h;}
+int sz(nd*n){return n?n->s:0;}
+void upd(nd*n){if(!n)return;
+	n->p=0;n->s=1+sz(n->l)+sz(n->r);
+	if(n->l){n->l->p=n;}if(n->r){n->r->p=n;}}
+nd*copy(nd*t){if(!t){return 0;}
+	nd*c=new nd{*t};c->l=copy(t->l);
+	c->r=copy(t->r);upd(c);return c;}
+void del(nd*&t){if(!t)return;
+	del(t->l);del(t->r);delete t;t=0;}
+void split(nd*t,T v,nd*&l,nd*&r){
+	if(!t){l=r=0;return;}
+	if(v<t->v){split(t->l,v,l,t->l);r=t;}
+	if(v>t->v){split(t->r,v,t->r,r);l=t;}
+	if(v==t->v){l=t->l;r=t->r;delete t;}
+	else upd(t);}
+void concat(nd*&t,nd*l,nd*r){
+	if(!l||!r){t=l?l:r;upd(t);return;}
+	if(h(l)>h(r)){concat(l->r,l->r,r);t=l;}
+	else{concat(r->l,l,r->l);t=r;}upd(t);}
+void ins(nd*&t,nd*n){
+	if(!t){t=n;upd(t);return;}
+	if(h(n)>h(t))split(t,n->v,n->l,n->r),t=n;
+	else{ins(n->v<t->v?t->l:t->r,n);}upd(t);}
+void ins(nd*&t,T v){ins(t,new nd{v});}
+void rem(nd*&t,T v,nd*&d){if(!t)return;
+	if(t->v==v){d=t;concat(t,t->l,t->r);}
+	else{rem(v<t->v?t->l:t->r,v,d);}upd(t);}
+void rem(nd*&t,T v){
+	nd*tmp=0;rem(t,v,tmp);delete tmp;}
+nd*find(nd*t,T v,int&i){while(t&&t->v!=v){
+	if(v<t->v)t=t->l;
+	else{i+=sz(t->l)+1;t=t->r;}}
+	if(t){i+=sz(t->l);}return t;}
+nd*find(nd*t,T v){
+	int tmp=0;return find(t,v,tmp);}
+nd*root(nd*n){while(n->p){n=n->p;}return n;}
+nd*nth(nd*t,int i){while(t&&i!=sz(t->l)){
+	if(i<sz(t->l))t=t->l;
+	else{i-=sz(t->l)+1;t=t->r;}}return t;}
+nd*min(nd*t){return nth(t,0);}
+nd*max(nd*t){return nth(t,sz(t)-1);}
+nd*skip(nd*n,int d){find(root(n),n->v,d);
+	return nth(root(n),d);}
+nd*succ(nd*n){return skip(n,1);}
+nd*pred(nd*n){return skip(n,-1);}
+}using namespace treap;
 
-void print(node*t, string prefix="") {
+// void setop(nd*&l,nd*&r,char b){
+// 	if(!l||!r){l=l?l:r;r=0;
+// 		if(!(b&1)){del(l);}return;}
+// 	if(h(l)<h(r))swap(l,r);
+// 	nd*lt,*rt=lt=0;
+// 	bool fnd=find(r,l->v);split(r,l->v,lt,rt);
+// 	setop(l->l,lt,b);setop(l->r,rt,b);
+// 	if(!(fnd?(b&2):(b&1)))rem(l,l->v);
+// 	r=0;upd(l);}
+// void diff(nd*&l,nd*&r){setop(l,r,1);}
+// void isct(nd*&l,nd*&r){setop(l,r,2);}
+// void merge(nd*&l,nd*&r){setop(l,r,3);}
+// void setmin(nd*&l,nd*r){if(!l||!r)return;
+// 	nd*lt,*rt=lt=0;split(l,r->v,lt,rt);
+// 	setmin(lt,r->l);setmin(rt,r->r);
+// 	concat(l,lt,rt);upd(l);}
+
+void print(nd*t, string prefix="") {
 	if (!t) return;
 	print(t->l, prefix+"  |");
 	cout << prefix << setw(3) << t->v << endl;
 	print(t->r, prefix+"  |");
 }
 
-void validate(node*t) {
+void validate(nd*t) {
 	if (!t) return;
-	assert(t->s == 1+size(t->l)+size(t->r));
+	assert(t->s == 1+sz(t->l)+sz(t->r));
 	if (t->l) { validate(t->l);
 		assert(t->l->p == t);
 		assert(max(t->l)->v < t->v);
@@ -135,14 +102,13 @@ void validate(node*t) {
 }
 
 int main() {
-	node *tree1=NULL, *tree2=NULL;
-	insert(tree1,1);
-	insert(tree1,4);
-	insert(tree2,4);
-	insert(tree2,2);
-	setmin(tree1,tree2);
+	nd *tree1=0, *tree2=0;
+	ins(tree1,1);
+	ins(tree1,4);
+	ins(tree2,4);
+	ins(tree2,2);
 	print(tree1); cout << endl;
-	delAll(tree1);
-	delAll(tree2);
+	del(tree1);
+	del(tree2);
 	return 0;
 }
