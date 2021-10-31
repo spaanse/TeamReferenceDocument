@@ -16,7 +16,7 @@ void add(int u,int v,int c){C[u][v]+=c;
 	A[u].push_back(v);A[v].push_back(u);}
 void ps(int u,int v){if(l[v]>=l[u]) return;
 	int f=min(x[u],C[u][v]-F[u][v]);
-	if(!x[v]&&v!=s&&v!=t&&f>0)q.push(v);
+	if(!x[v]&&v!=s&&v!=t&&0<f)q.push(v);
 	F[u][v]+=f;F[v][u]-=f;x[v]+=f;x[u]-=f;}
 void fix(int u){while(x[u]){
 	if(i[u]==(int)A[u].size()){l[u]++;i[u]=0;}

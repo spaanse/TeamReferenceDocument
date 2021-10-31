@@ -8,12 +8,12 @@ typedef vector<ii> vii;
 typedef int64_t ll;
 
 //10N
-struct fgraph{
+struct flowgraph{
 	int numNode,source,sink;
 	vi label,excess,index;
 	vvi adjList,capacity,flow;
-	queue<int>q;
-	fgraph(int _numNode,int _source,int _sink) {
+	queue<int> todo;
+	flowgraph(int _numNode,int _source,int _sink) {
 		numNode = _numNode;
 		source = _source;
 		sink = _sink;
@@ -26,42 +26,41 @@ struct fgraph{
 		capacity.assign(numNode,vi(numNode,0));
 		flow.assign(numNode,vi(numNode,0));
 	}
-	void addedge(int u,int v,int c) {
-		capacity[u][v]+=c;
-		adjList[u].push_back({v});
-		adjList[v].push_back({u});
+	void addedge(int from,int to,int cap) {
+		capacity[from][to]+=cap;
+		adjList[from].push_back(to);
+		adjList[to].push_back(from);
 	}
-	void push(int u,int v){
-		if(label[v]>=label[u]) return;
-		int newflow=min(excess[u],
-		                capacity[u][v]-flow[u][v]);
-		if(!excess[v] and v!=source and v!=sink and newflow>0) {
-			q.push(v);
+	void push(int from,int to){
+		if(label[to]>=label[from]) return;
+		int newflow=min(excess[from],
+		                capacity[from][to]-flow[from][to]);
+		if(!excess[to] and to!=source and to!=sink and newflow>0) {
+			todo.push(to);
 		}
-		flow[u][v]+=newflow;
-		flow[v][u]-=newflow;
-		excess[v]+=newflow;
-		excess[u]-=newflow;
+		flow[from][to]+=newflow;
+		flow[to][from]-=newflow;
+		excess[to]+=newflow;
+		excess[from]-=newflow;
 	}
-	void fix(int u){
-		while(excess[u]){
-			if(index[u]==(int)adjList[u].size()) {
-				label[u]++;
-				index[u]=0;
+	void fix(int node){
+		while(excess[node]){
+			if(index[node]==(int)adjList[node].size()) {
+				label[node]++;
+				index[node]=0;
 			} else {
-				push(u,adjList[u][index[u]]);
-				index[u]++;
+				push(node,adjList[node][index[node]]);
+				if (excess[node]) index[node]++;
 			}
 		}
-		index[u]--;
 	}
-	int calc(){
-		for(int v:adjList[source]) {
-			push(source,v);
+	int calculate(){
+		for(int to:adjList[source]) {
+			push(source,to);
 		}
-		while (!q.empty()) {
-			fix(q.front());
-			q.pop();
+		while (!todo.empty()) {
+			fix(todo.front());
+			todo.pop();
 		}
 		return excess[sink];
 	}
@@ -81,16 +80,16 @@ int main(){
 			}
 		}
 		random_shuffle(edges.begin(), edges.end());
-		fgraph fg(numNode,0,numNode-1);
+		flowgraph fg(numNode,0,numNode-1);
 		for (int i = 0; i < numEdge; i++) {
 			fg.addedge(edges[i].first,edges[i].second,rand()%100);
 		}
-		int flow = fg.calc();
+		int flow = fg.calculate();
 		cout << flow << endl;
 		
 		for(int from=0;from<numNode;from++) {
-			for (int v : fg.adjList[from]) {
-				assert(fg.capacity[from][v]>=fg.flow[from][v]);
+			for (int to : fg.adjList[from]) {
+				assert(fg.capacity[from][to]>=fg.flow[from][to]);
 			}
 			if (from != 0 && from != numNode-1) {
 				assert(fg.excess[from] == 0);
@@ -98,17 +97,17 @@ int main(){
 			assert(fg.label[from] < 2*numNode);
 		}
 
-		queue<int> q;
-		q.push(0);
+		queue<int> todo;
+		todo.push(0);
 		vi vis(numNode,false);
 		vis[0] = true;
-		while (!q.empty()) {
-			int from = q.front(); q.pop();
+		while (!todo.empty()) {
+			int from = todo.front(); todo.pop();
 			assert(from != numNode-1);
-			for (int v : fg.adjList[from]) {
-				if (fg.capacity[from][v]>fg.flow[from][v]
-					  &&!vis[v]) {
-					q.push(v); vis[v] = true;
+			for (int to : fg.adjList[from]) {
+				if (fg.capacity[from][to]>fg.flow[from][to]
+					  &&!vis[to]) {
+					todo.push(to); vis[to] = true;
 				}
 			}
 		}
