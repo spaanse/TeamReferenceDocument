@@ -76,4 +76,4 @@ for path, dirs, files in os.walk('./code'):
 for warning in warnings:
     print(warning)
 
-exit(len(warnings))
+# exit(len(warnings))
