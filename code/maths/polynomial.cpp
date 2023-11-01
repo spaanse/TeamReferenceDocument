@@ -1,35 +1,6 @@
-#include <iostream>
-#include <vector>
-#include <utility>
-#include <tuple>
-#include <algorithm>
-#include <assert.h>
-#include <complex>
-using namespace std;
-
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef pair<int,int> ii;
-typedef vector<ii> vii;
-typedef int64_t ll;
-
-typedef complex<double> cpx;
-typedef vector<cpx> vcpx;
-//6E3
-// n power of two
-void fft(vcpx&a,int n,bool inv=0){
-	if(n==1) {return;} a.resize(n);
-	cpx wp=exp(2i*acos(-1)/cpx(inv?-n:n)),w=1;
-	vcpx o(n/2),e(n/2);
-	for(int i=0;i<n/2;i++){
-		e[i]=a[2*i];o[i]=a[2*i+1];}
-	fft(e,n/2,inv);fft(o,n/2,inv);
-	for(int i=0;i<n/2;i++,w*=wp){
-		a[i]=e[i]+w*o[i];a[i+n/2]=e[i]-w*o[i];}
-	if(inv)for(int i=0;i<n;i++)a[i]/=2;}
-
-#define rep(i,m) for(int i=0;i<m;i++)
-//075
+#pragma once
+#include "../setup/header.cpp"
+#include "../maths/fft.cpp"
 template<typename T>
 struct pl { typedef vector<T> vT; vT c;
 void fix(){while(!c.empty()&&c.back()==T(0))
@@ -82,11 +53,11 @@ pl fdiv(pl r){int d=deg()-r.deg()+1;
 pl fmod(pl r){return *this-fdiv(r)*r;}
 pl fmul(pl r){int d=deg()+r.deg()+1;
 	d=2*d-1; while (d&(d-1)) d&=d-1;
-	vcpx v1=c,v2=r.c; fft(v1,d);fft(v2,d);
+	vc v1=c,v2=r.c; fft(v1,d);fft(v2,d);
 	for (int i=0;i<d;i++) v1[i]*=v2[i];
 	fft(v1,d,1);return pl(v1);}};
 
-int main() {
+int test_poly() {
 	pl<cpx> a {3,5,2};
 	pl<cpx> b {2,-3,1,7};
 	pl<cpx> c = b.fmod(a);

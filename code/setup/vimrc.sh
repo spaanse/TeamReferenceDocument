@@ -1,4 +1,4 @@
-map <F4> :w <CR> :!~/check.sh % %.dbg <CR>
+map <F4> :w <CR> :!~/check.sh % >%.dbg <CR>
 	\ :e %.dbg <CR> :bd
 map <F5> :w<CR>:!g++ % -o %:r -Wall -g -O3
 	\ && echo "compiled"<CR>

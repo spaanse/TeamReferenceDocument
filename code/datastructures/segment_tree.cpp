@@ -1,16 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <utility>
-#include <tuple>
-#include <algorithm>
-using namespace std;
-
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef pair<int,int> ii;
-typedef vector<ii> vii;
-typedef int64_t ll;
-//43c
+#pragma once
+#include "../setup/header.cpp"
 struct segTree{
 struct seg{int v=0,lz=0;int l=0,r=0;};
 vector<seg>s;
@@ -40,8 +29,3 @@ seg qry(int l,int r,int i=1){ps(i);
 	if(l<=s[i].l&&r>=s[i].r)return s[i];
 	return join(qry(l,r,2*i),
 		qry(l,r,2*i+1));}};
-
-int main() {
-	
-	return 0;
-}

@@ -1,27 +1,19 @@
-#include <bits/stdc++.h>
-using namespace std;
-
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef pair<int,int> ii;
-typedef vector<ii> vii;
-typedef int64_t ll;
-typedef queue<int> qi;
-
-//faL
+#pragma once
+#include "../setup/header.cpp"
 struct flow{int n,s,t;vi l,x,i;vvi C,F;qi q;
 flow(int N):l(N),x(N),i(N),C(N,l),F(C){
 	n=N;s=0;t=N-1;l[s]=N;x[s]=2e9;}
-void ps(int u,int v){if(l[v]>=l[u]) return;
-	int f=min(x[u],C[u][v]-F[u][v]);
-	if(!x[v]&&v!=s&&v!=t&&0<f)q.push(v);
-	F[u][v]+=f;F[v][u]-=f;x[v]+=f;x[u]-=f;}
-void fix(int u){while(x[u]){if(i[u]<n)
+void add(int u,int v,int c){C[u][v]+=c;}
+void ps(int u,int v){int f;if(l[v]<=l[u]){
+	f=min(x[u],F[v][u]+(l[v]<l[u]?C[u][v]:0));
+	if(0<f){if(!x[v]&&v!=s&&v!=t)q.push(v);
+	F[u][v]+=f;F[v][u]-=f;x[v]+=f;x[u]-=f;}}}
+void dc(int u){while(x[u]){if(i[u]<n)
 	ps(u,i[u]++);else{l[u]++;i[u]=0;}}i[u]--;}
 void calc(){for(int v=0;v<n;v++) ps(s,v);
-	for(;q.size();q.pop())fix(q.front());}};
+	for(;q.size();q.pop()) dc(q.front());}};
 
-int main(){
+int test_pr(){
 	int numNode, numEdge;
 	cin >> numNode >> numEdge;
 	flow fg(numNode);

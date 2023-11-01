@@ -1,18 +1,9 @@
-#include <bits/stdc++.h>
-using namespace std;
-
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef pair<int,int> ii;
-typedef vector<ii> vii;
-typedef int64_t ll;
-typedef queue<int> qi;
-
-//faL
+#pragma once
+#include "../setup/header.cpp"
 struct flow{int s=0,t;vi d,V;vvi A,C,F;qi q;
 flow(int n):d(n),A(n),C(n,d){t=n-1;V=d;F=C;}
 void add(int u,int v,int c){C[u][v]+=c;
-	A[u].push_back({v});A[v].push_back({u});}
+	A[u].push_back(v);A[v].push_back(u);}
 int r(int u,int v){return C[u][v]-F[u][v];}
 int bfs(){q.push(s);d=vi(size(d));d[s]=1;
 	while(q.size()){int u=q.front();q.pop();
@@ -26,7 +17,7 @@ int dfs(int u,int c){if(u==t){return c;}
 int calc(){int a=0;while(bfs()){
 	V=vi(size(V));a+=dfs(s,2e9);}return a;}};
 
-int main(){
+int test_dinic(){
 	int numNode, numEdge;
 	cin >> numNode >> numEdge;
 	flow flowgraph(numNode);

@@ -1,18 +1,5 @@
-#include<iostream>
-#include<vector>
-#include<utility>
-#include<tuple>
-#include<algorithm>
-#include<iomanip>
-#include<assert.h>
-using namespace std;
-
-typedef vector<int>vi;
-typedef vector<vi>vvi;
-typedef pair<int,int>ii;
-typedef vector<ii>vii;
-typedef int64_t ll;
-//727
+#pragma once
+#include "../setup/header.cpp"
 struct nd{
 int v;int h,s=1,f=0;nd*l,*r=l=0;
 nd(int _v){v=_v;h=rand();}};
@@ -55,7 +42,7 @@ void rev(nd*t,int l,int r){nd*lt,*m,*rt;
 	spt(t,lt,rt,r);spt(lt,lt,m,l);
 	if(m){m->f^=1;}cc(lt,lt,m);cc(t,lt,rt);}
 
-int main(){
+int test_treap(){
 	nd*arr=0;
 	for(int i=0;i<20;i++){
 		int newVal=rand()%100;

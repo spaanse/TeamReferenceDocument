@@ -1,18 +1,5 @@
-#include<iostream>
-#include<vector>
-#include<utility>
-#include<tuple>
-#include<algorithm>
-#include<map>
-using namespace std;
-
-typedef vector<int>vi;
-typedef vector<vi>vvi;
-typedef pair<int,int>ii;
-typedef vector<ii>vii;
-typedef int64_t ll;
-typedef string st;
-//625
+#pragma once
+#include "../setup/header.cpp"
 struct sufAut{
 struct nd{nd*p=0;int ln=0,oc=0,ps=1;
 	map<char,nd*>t={};}*l,*r=l=new nd;
@@ -77,9 +64,10 @@ int numOcc(st s){return fd(s)->oc;}};
 // int numOcc(vi s){return cnt[fd(s)];}
 // int fstOcc(vi s){return f[fd(s)]-s.size();}};
 
-int main(){
+int test_sufaut(){
 	sufAut s;
 	s.add("hello world!");
 	cout << (s.has("wor")?"T":"F") << endl;
+	cout << (s.fstOcc("l")) << endl;
 	return 0;
 }

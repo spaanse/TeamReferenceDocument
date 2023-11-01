@@ -1,25 +1,5 @@
-#ifndef POINT
-#define POINT
-
-#include <iostream>
-#include <vector>
-#include <utility>
-#include <tuple>
-#include <algorithm>
-#include <math.h>
-using namespace std;
-
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef pair<int,int> ii;
-typedef vector<ii> vii;
-typedef int64_t ll;
-typedef double db;
-
-#define EPS 1e-9
-#define INF (1<<29)
-
-//5At
+#pragma once
+#include "../setup/header.cpp"
 struct pt{ db x=0.0,y=0.0;
 bool operator==(pt p){
 	return fabs(x-p.x)<EPS &&fabs(y-p.y)<EPS;}
@@ -46,8 +26,3 @@ db angle(pt p){
 	return acos(dot(p)/norm()/p.norm());}
 bool col(pt p){return fabs(cross(p))<EPS;}
 bool ccw(pt p){return cross(p)>EPS;}};
-
-int main() {
-	return 0;
-}
-#endif

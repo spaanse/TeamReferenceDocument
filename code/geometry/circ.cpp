@@ -1,28 +1,7 @@
-#ifndef CIRC
-#define CIRC
-
-#include <iostream>
-#include <vector>
-#include <utility>
-#include <tuple>
-#include <algorithm>
-#include <math.h>
-#include <assert.h>
-#include "point.cpp"
-#include "line.cpp"
-using namespace std;
-
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef pair<int,int> ii;
-typedef vector<ii> vii;
-typedef int64_t ll;
-
-#define EPS 1e-9
-#define INF (1<<29)
-
-//34q
-//include point,line
+#pragma once
+#include "../setup/header.cpp"
+#include "../geometry/point.cpp"
+#include "../geometry/line.cpp"
 struct circ{pt c;db r;
 circ(pt _c,db _r){c=_c;r=_r;}
 circ(pt p1,pt p2,pt p3){
@@ -67,4 +46,3 @@ pt isct(circ o){db d=c.dist(o.c);
 db arclen(db r,db t){return r*t;}
 db chordlen(db r,db t){return r*sin(t/2)*2;}
 db sectorarea(db r,db t){return.5*t*r*r;}
-#endif

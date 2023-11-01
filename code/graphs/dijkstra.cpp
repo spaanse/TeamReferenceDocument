@@ -1,23 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <utility>
-#include <tuple>
-#include <algorithm>
-#include <queue>
-using namespace std;
-
-#define INF (1<<29)
-
-bool ckmax(int&a,int b){return b>a?a=b,1:0;}
-bool ckmin(int&a,int b){return b<a?a=b,1:0;}
-
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef pair<int,int> ii;
-typedef vector<ii> vii;
-typedef vector<vii> vvii;
-typedef int64_t ll;
-//eJa
+#pragma once
+#include "../setup/header.cpp"
 vi dijkstra(vvii adj, int s){int v,dv,w,dw;
 	priority_queue<ii,vii,greater<ii>> t;
 	vi p(adj.size(),-1),d(adj.size(),INF);
@@ -27,7 +9,7 @@ vi dijkstra(vvii adj, int s){int v,dv,w,dw;
 				if(dw<d[w]){p[w]=v;t.push({dw,w});}
 	}}} return d;}
 
-int main() {
+int test_dijkstra() {
 	vvii adjList(6);
 	adjList[0].push_back({1,7});
 	adjList[0].push_back({2,9});

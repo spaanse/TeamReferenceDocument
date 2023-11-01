@@ -1,16 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <utility>
-#include <tuple>
-#include <algorithm>
-using namespace std;
-
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef pair<int,int> ii;
-typedef vector<ii> vii;
-typedef int64_t ll;
-//43c
+#pragma once
+#include "../setup/header.cpp"
 struct ft{int n;vi a;
 	ft(int _n):n(_n),a(vi(n,0)){}
 	void add(int i,int d){
@@ -26,9 +15,3 @@ struct ft_ru{ft x0,x1;
 		x1.add(l,-d*(l-1));x1.add(r,d*(r-1));}
 	int qr(int i){return i*x0.qr(i)+x1.qr(i);}
 	int qr(int l,int r){return qr(r)-qr(l);}};
-
-
-int main() {
-	
-	return 0;
-}

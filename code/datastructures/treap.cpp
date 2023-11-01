@@ -1,18 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <utility>
-#include <tuple>
-#include <algorithm>
-#include <assert.h>
-#include <iomanip>
-using namespace std;
-
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef pair<int,int> ii;
-typedef vector<ii> vii;
-typedef int64_t ll;
-//727
+#pragma once
+#include "../setup/header.cpp"
 namespace treap{typedef int T;
 struct nd{T v;int h,s=1;nd*p=0,*l=0,*r=0;
 	nd(T _v){v=_v;h=rand();}};
@@ -33,13 +20,12 @@ void split(nd*t,T v,nd*&l,nd*&r){
 	if(v==t->v){l=t->l;r=t->r;delete t;}
 	else upd(t);}
 void concat(nd*&t,nd*l,nd*r){
-	if(!l||!r){t=l?l:r;upd(t);return;}
+	if(!l||!r){t=l?l:r}else{
 	if(h(l)>h(r)){concat(l->r,l->r,r);t=l;}
-	else{concat(r->l,l,r->l);t=r;}upd(t);}
-void ins(nd*&t,nd*n){
-	if(!t){t=n;upd(t);return;}
+	else{concat(r->l,l,r->l);t=r;}}upd(t);}
+void ins(nd*&t,nd*n){if(!t){t=n}else{
 	if(h(n)>h(t))split(t,n->v,n->l,n->r),t=n;
-	else{ins(n->v<t->v?t->l:t->r,n);}upd(t);}
+	else{ins(n->v<t->v?t->l:t->r,n);}}upd(t);}
 void ins(nd*&t,T v){ins(t,new nd{v});}
 void rem(nd*&t,T v,nd*&d){if(!t)return;
 	if(t->v==v){d=t;concat(t,t->l,t->r);}
@@ -101,7 +87,7 @@ void validate(nd*t) {
 		assert(h(t->r) <= h(t));}
 }
 
-int main() {
+int test_treap() {
 	nd *tree1=0, *tree2=0;
 	ins(tree1,1);
 	ins(tree1,4);
